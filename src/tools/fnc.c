@@ -58,19 +58,6 @@ int main(int argc, char** argv)
         goto exit;
     }
 
-        if(flag_verbose) {
-            printf("verbose is on\n");
-        }
-
-        if(output_dir) {
-            printf("output_dir = %s\n", output_dir);
-        }
-
-        if(output_type) {
-            printf("output_type = %s\n", output_type);
-        }
-
-
 
 exit:
     if(free_outputdir) { 
