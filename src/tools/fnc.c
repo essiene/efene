@@ -89,7 +89,7 @@ exit:
 
 static void usage(char** s)
 {
-    printf("Usage: %s [-hv] [-o outputdir] [-t format]  \n", basename(s[0]));
+    printf("Usage: %s [-hv] [-o outputdir] [-t format]  infiles\n", basename(s[0]));
     printf("  -h    show this help message and exit\n");
     printf("  -o    Specify the output directory. Default is the\n");
     printf("        current working directory\n");
@@ -97,6 +97,8 @@ static void usage(char** s)
     printf("        'beam', 'ast', 'tree', 'lex', 'erl'. Default\n");
     printf("        output type is 'beam'\n");
     printf("  -v    Turn on verbose mode for compiler\n");
+    printf("\n");
+    printf("All input files should have an extension of .fn\n");
 }
 
 static void illegal_option(char c)
