@@ -16,6 +16,7 @@ int opterr = 0;
 
 static void usage(char**);
 static void illegal_option(char);
+static void parameter_required(char);
 
 
 int main(int argc, char** argv)
@@ -52,6 +53,11 @@ int main(int argc, char** argv)
                           ret_status = -1;
                           goto exit;
                       }
+            case ':' : {
+                           parameter_required(optopt);
+                           ret_status = -1;
+                           goto exit;
+                       }
         }
 
         if(c == -1) {
@@ -96,5 +102,11 @@ static void usage(char** s)
 static void illegal_option(char c)
 {
     printf("Illegal option: -%c\n", c);
+    printf("  use -h for usage instructions\n");
+}
+
+static void parameter_required(char c)
+{
+    printf("Option '-%c' requires an argument\n", c);
     printf("  use -h for usage instructions\n");
 }
