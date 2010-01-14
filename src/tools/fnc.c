@@ -6,17 +6,11 @@
 #define OPTSTRING "+ho:t:v"
 #define MAX_STRLEN 255
 
-static void usage(char** s)
-{
-    printf("Usage: %s [-hv] [-o outputdir] [-t format]  \n", basename(s[0]));
-    printf("  -h    show this help message and exit\n");
-    printf("  -o    Specify the output directory. Default is the\n");
-    printf("        current working directory\n");
-    printf("  -t    Specify the output format. Valid values are:\n");
-    printf("        'beam', 'ast', 'tree', 'lex', 'erl'. Default\n");
-    printf("        output type is 'beam'\n");
-    printf("  -v    Turn on verbose mode for compiler\n");
-}
+int opterr = 0;
+
+static void usage(char**);
+static void illegal_option(char);
+
 
 int main(int argc, char** argv)
 {
@@ -45,6 +39,11 @@ int main(int argc, char** argv)
                           free_outputtype = 1;
                           break;
                       }
+            case '?': {
+                          illegal_option(optopt);
+                          ret_status = -1;
+                          goto exit;
+                      }
         }
 
         if(c == -1) {
@@ -69,4 +68,25 @@ exit:
     }
 
     return ret_status;
+}
+
+
+/* private */
+
+static void usage(char** s)
+{
+    printf("Usage: %s [-hv] [-o outputdir] [-t format]  \n", basename(s[0]));
+    printf("  -h    show this help message and exit\n");
+    printf("  -o    Specify the output directory. Default is the\n");
+    printf("        current working directory\n");
+    printf("  -t    Specify the output format. Valid values are:\n");
+    printf("        'beam', 'ast', 'tree', 'lex', 'erl'. Default\n");
+    printf("        output type is 'beam'\n");
+    printf("  -v    Turn on verbose mode for compiler\n");
+}
+
+static void illegal_option(char c)
+{
+    printf("Illegal option: -%c\n", c);
+    printf("  use -h for usage instructions\n");
 }
