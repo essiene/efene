@@ -50,7 +50,13 @@ int main(int argc, char** argv)
 
 
 exit:
-    free(output_dir);
-    free(output_type);
+    if(output_dir) { 
+        free(output_dir);
+    }
+
+    if(output_type) { 
+        free(output_type);
+    }
+
     return ret_status;
 }
