@@ -6,6 +6,18 @@
 #define OPTSTRING "+ho:t:v"
 #define MAX_STRLEN 255
 
+static void usage(char** s)
+{
+    printf("Usage: %s [-hv] [-o outputdir] [-t format]  \n", basename(s[0]));
+    printf("  -h    show this help message and exit\n");
+    printf("  -o    Specify the output directory. Default is the\n");
+    printf("        current working directory\n");
+    printf("  -t    Specify the output format. Valid values are:\n");
+    printf("        'beam', 'ast', 'tree', 'lex', 'erl'. Default\n");
+    printf("        output type is 'beam'\n");
+    printf("  -v    Turn on verbose mode for compiler\n");
+}
+
 int main(int argc, char** argv)
 {
     int flag_help= 0;
@@ -31,9 +43,10 @@ int main(int argc, char** argv)
 
     }
 
-        if(flag_help) {
-            printf("help is on\n");
-        }
+    if(flag_help) {
+        usage(argv);
+        goto exit;
+    }
 
         if(flag_verbose) {
             printf("verbose is on\n");
