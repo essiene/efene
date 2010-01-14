@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     int free_outputdir = 0;
     int free_outputtype = 0;
 
-    int ret_status = 0;
+    int ret_status = -1;
 
     while(1) {
         int c = getopt(argc, argv, OPTSTRING);
@@ -51,12 +51,10 @@ int main(int argc, char** argv)
                when it detects an illegal option char */
             case '?': {
                           illegal_option(optopt);
-                          ret_status = -1;
                           goto exit;
                       }
             case ':' : {
                            parameter_required(optopt);
-                           ret_status = -1;
                            goto exit;
                        }
         }
@@ -76,6 +74,8 @@ int main(int argc, char** argv)
         printf("No input files\n");
         goto exit;
     }
+
+    ret_status = 0;
 
 exit:
     if(free_outputdir) { 
