@@ -22,8 +22,10 @@ int main(int argc, char** argv)
 {
     int flag_help= 0;
     int flag_verbose = 0;
-    char* output_dir = NULL;
-    char* output_type = NULL;
+    char* output_dir = ".";
+    char* output_type = "beam";
+    int free_outputdir = 0;
+    int free_outputtype = 0;
 
     int ret_status = 0;
 
@@ -33,8 +35,16 @@ int main(int argc, char** argv)
         switch(c) {
             case 'h': flag_help = 1; break;
             case 'v': flag_verbose = 1; break;
-            case 'o': output_dir = strndup(optarg, MAX_STRLEN); break;
-            case 't': output_type = strndup(optarg, MAX_STRLEN); break;
+            case 'o': {
+                          output_dir = strndup(optarg, MAX_STRLEN);
+                          free_outputdir = 1;
+                          break;
+                      }
+            case 't': {
+                          output_type = strndup(optarg, MAX_STRLEN); 
+                          free_outputtype = 1;
+                          break;
+                      }
         }
 
         if(c == -1) {
@@ -63,11 +73,11 @@ int main(int argc, char** argv)
 
 
 exit:
-    if(output_dir) { 
+    if(free_outputdir) { 
         free(output_dir);
     }
 
-    if(output_type) { 
+    if(free_outputtype) { 
         free(output_type);
     }
 
