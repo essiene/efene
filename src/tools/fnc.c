@@ -17,6 +17,7 @@ int opterr = 0;
 static void usage(char**);
 static void illegal_option(char);
 static void parameter_required(char);
+static int has_input_files(int,int);
 
 
 int main(int argc, char** argv)
@@ -71,6 +72,10 @@ int main(int argc, char** argv)
         goto exit;
     }
 
+    if(!has_input_files(optind, argc)) {
+        printf("No input files\n");
+        goto exit;
+    }
 
 exit:
     if(free_outputdir) { 
@@ -111,4 +116,13 @@ static void parameter_required(char c)
 {
     printf("Option '-%c' requires an argument\n", c);
     printf("  use -h for usage instructions\n");
+}
+
+static int has_input_files(int index, int count)
+{
+    if(index < count) {
+        return 1;
+    }
+
+    return 0;
 }
