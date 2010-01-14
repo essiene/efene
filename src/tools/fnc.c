@@ -3,7 +3,13 @@
 #include <string.h>
 #include <unistd.h>
 
-#define OPTSTRING "+ho:t:v"
+/*This definition of OPTSTRING for getopt
+  will stop option parsing after the first
+  non option argument it encounters, and
+  will set 'optopt' to ':' when it encounters
+  an option that needs an argument, without
+  the argument being specified */
+#define OPTSTRING "+:ho:t:v"
 #define MAX_STRLEN 255
 
 int opterr = 0;
@@ -39,6 +45,8 @@ int main(int argc, char** argv)
                           free_outputtype = 1;
                           break;
                       }
+            /* getopt puts a '?' in global char 'optopt'
+               when it detects an illegal option char */
             case '?': {
                           illegal_option(optopt);
                           ret_status = -1;
