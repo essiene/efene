@@ -18,6 +18,7 @@ static void usage(char**);
 static void illegal_option(char);
 static void parameter_required(char);
 static int has_input_files(int,int);
+static int has_suffix(char*, char*);
 
 
 int main(int argc, char** argv)
@@ -121,6 +122,20 @@ static void parameter_required(char c)
 static int has_input_files(int index, int count)
 {
     if(index < count) {
+        return 1;
+    }
+
+    return 0;
+}
+
+static int has_suffix(char* str, char* suffix)
+{
+    int suffix_len = strnlen(suffix, MAX_STRLEN);
+    int str_len = strnlen(str, MAX_STRLEN);
+
+    char* str_cmp_offset = str + (str_len - suffix_len);
+
+    if(strncmp(str_cmp_offset, suffix, MAX_STRLEN) == 0) {
         return 1;
     }
 
