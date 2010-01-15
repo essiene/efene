@@ -108,8 +108,8 @@ static void usage(char** s)
     printf("  -o    Specify the output directory. Default is the\n");
     printf("        current working directory\n");
     printf("  -t    Specify the output format. Valid values are:\n");
-    printf("        'beam', 'ast', 'tree', 'lex', 'erl'. Default\n");
-    printf("        output type is 'beam'\n");
+    printf("        'beam', 'ast', 'tree', 'lex', 'erl' 'erl2ast'.\n");
+    printf("        Default output type is 'beam'\n");
     printf("  -v    Turn on verbose mode for compiler\n");
     printf("\n");
     printf("All input files should have an extension of .fn\n");
