@@ -76,6 +76,14 @@ int main(int argc, char** argv)
         goto exit;
     }
 
+    int i;
+    for(i = optind; i<argc; i++) { 
+        if(!has_suffix(argv[i], ".fn")) {
+            printf("Invalid input filename '%s'\n", argv[i]);
+            goto exit;
+        }
+    }
+
     ret_status = 0;
 
 exit:
