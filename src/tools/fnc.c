@@ -79,9 +79,18 @@ int main(int argc, char** argv)
 
     int i;
     for(i = optind; i<argc; i++) { 
-        if(!has_suffix(argv[i], ".fn")) {
-            printf("Invalid input filename '%s'\n", argv[i]);
-            goto exit;
+        char* file = argv[i];
+
+        if(strncmp(output_type, "erl2ast", MAX_STRLEN) == 0) {
+            if(!has_suffix(file, ".erl")) {
+                illegal_filetype(file, ".erl", output_type);
+                goto exit;
+            }
+        } else {
+            if(!has_suffix(file, ".fn")) {
+                illegal_filetype(file, ".fn", output_type);
+                goto exit;
+            } 
         }
     }
 
