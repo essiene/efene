@@ -16,6 +16,7 @@ int opterr = 0;
 
 static void usage(char**);
 static void illegal_option(char);
+static void illegal_filetype(char*, char*, char*);
 static void parameter_required(char);
 static int has_input_files(int,int);
 static int has_suffix(char*, char*);
@@ -148,4 +149,9 @@ static int has_suffix(char* str, char* suffix)
     }
 
     return 0;
+}
+
+static void illegal_filetype(char* str, char* suffix, char* type)
+{ 
+    printf("Specified output type is '%s', expecting a '%s' file, but found '%s'\n", type, suffix, str);
 }
