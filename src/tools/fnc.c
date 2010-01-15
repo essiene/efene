@@ -92,6 +92,11 @@ int main(int argc, char** argv)
                 goto exit;
             } 
         }
+
+        if(access(file, R_OK) != 0) {
+            printf("Can't read file '%s'\n", file);
+            goto exit;
+        }
     }
 
     ret_status = 0;
