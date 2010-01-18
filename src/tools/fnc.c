@@ -74,7 +74,7 @@ int main(int argc, char** argv)
     }
 
     if(!has_input_files(optind, argc)) {
-        printf("No input files\n");
+        fprintf(stderr, "No input files\n");
         goto exit;
     }
 
@@ -101,28 +101,28 @@ exit:
 
 static void usage(char** s)
 {
-    printf("Usage: %s [-hv] [-o outputdir] [-t format]  infiles\n", basename(s[0]));
-    printf("  -h    show this help message and exit\n");
-    printf("  -o    Specify the output directory. Default is the\n");
-    printf("        current working directory\n");
-    printf("  -t    Specify the output format. Valid values are:\n");
-    printf("        'beam', 'ast', 'tree', 'lex', 'erl' 'erl2ast'.\n");
-    printf("        Default output type is 'beam'\n");
-    printf("  -v    Turn on verbose mode for compiler\n");
-    printf("\n");
-    printf("All input files should have an extension of .fn\n");
+    fprintf(stdout, "Usage: %s [-hv] [-o outputdir] [-t format]  infiles\n", basename(s[0]));
+    fprintf(stdout, "  -h    show this help message and exit\n");
+    fprintf(stdout, "  -o    Specify the output directory. Default is the\n");
+    fprintf(stdout, "        current working directory\n");
+    fprintf(stdout, "  -t    Specify the output format. Valid values are:\n");
+    fprintf(stdout, "        'beam', 'ast', 'tree', 'lex', 'erl' 'erl2ast'.\n");
+    fprintf(stdout, "        Default output type is 'beam'\n");
+    fprintf(stdout, "  -v    Turn on verbose mode for compiler\n");
+    fprintf(stdout, "\n");
+    fprintf(stdout, "All input files should have an extension of .fn\n");
 }
 
 static void illegal_option(char c)
 {
-    printf("Illegal option: -%c\n", c);
-    printf("  use -h for usage instructions\n");
+    fprintf(stderr, "Illegal option: -%c\n", c);
+    fprintf(stderr, "  use -h for usage instructions\n");
 }
 
 static void parameter_required(char c)
 {
-    printf("Option '-%c' requires an argument\n", c);
-    printf("  use -h for usage instructions\n");
+    fprintf(stderr, "Option '-%c' requires an argument\n", c);
+    fprintf(stderr, "  use -h for usage instructions\n");
 }
 
 static int has_input_files(int index, int count)
@@ -150,7 +150,7 @@ static int has_suffix(char* str, char* suffix)
 
 static void illegal_filetype(char* str, char* suffix, char* type)
 { 
-    printf("Specified output type is '%s', expecting a '%s' file, but found '%s'\n", type, suffix, str);
+    fprintf(stderr, "Specified output type is '%s', expecting a '%s' file, but found '%s'\n", type, suffix, str);
 }
 
 static int check_input_files(char** files, int count, int index, char* type)
@@ -172,7 +172,7 @@ static int check_input_files(char** files, int count, int index, char* type)
         }
 
         if(access(file, R_OK) != 0) {
-            printf("Can't read file '%s'\n", file);
+            fprintf(stderr, "Can't read file '%s'\n", file);
             return 0;
         }
     }
