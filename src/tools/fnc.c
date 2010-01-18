@@ -20,6 +20,7 @@ static void illegal_filetype(char*, char*, char*);
 static void parameter_required(char);
 static int has_input_files(int,int);
 static int has_suffix(char*, char*);
+static int check_input_files(char**, int, int, char*);
 
 
 int main(int argc, char** argv)
@@ -77,26 +78,8 @@ int main(int argc, char** argv)
         goto exit;
     }
 
-    int i;
-    for(i = optind; i<argc; i++) { 
-        char* file = argv[i];
-
-        if(strncmp(output_type, "erl2ast", MAX_STRLEN) == 0) {
-            if(!has_suffix(file, ".erl")) {
-                illegal_filetype(file, ".erl", output_type);
-                goto exit;
-            }
-        } else {
-            if(!has_suffix(file, ".fn")) {
-                illegal_filetype(file, ".fn", output_type);
-                goto exit;
-            } 
-        }
-
-        if(access(file, R_OK) != 0) {
-            printf("Can't read file '%s'\n", file);
-            goto exit;
-        }
+    if(!check_input_files(argv, argc, optind, output_type)) {
+        goto exit;
     }
 
     ret_status = 0;
@@ -168,4 +151,31 @@ static int has_suffix(char* str, char* suffix)
 static void illegal_filetype(char* str, char* suffix, char* type)
 { 
     printf("Specified output type is '%s', expecting a '%s' file, but found '%s'\n", type, suffix, str);
+}
+
+static int check_input_files(char** files, int count, int index, char* type)
+{
+    int i;
+    for(i = index; i<count; i++) { 
+        char* file = files[i];
+
+        if(strncmp(type, "erl2ast", MAX_STRLEN) == 0) {
+            if(!has_suffix(file, ".erl")) {
+                illegal_filetype(file, ".erl", type);
+                return 0;
+            }
+        } else {
+            if(!has_suffix(file, ".fn")) {
+                illegal_filetype(file, ".fn", type);
+                return 0;
+            } 
+        }
+
+        if(access(file, R_OK) != 0) {
+            printf("Can't read file '%s'\n", file);
+            return 0;
+        }
+    }
+
+    return 1;
 }
