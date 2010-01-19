@@ -21,6 +21,8 @@ typedef struct {
 
     int check_status;
 
+    int index;
+
     char* output_dir;
     char* output_type;
 } Param;
@@ -32,9 +34,9 @@ static void usage(char**);
 static void illegal_option(char);
 static void illegal_filetype(char*, char*, char*);
 static void parameter_required(char);
-static int has_input_files(int,int);
+static int has_input_files(Param,int);
 static int has_suffix(char*, char*);
-static int check_input_files(char**, int, int, char*);
+static int check_input_files(char**, int, Param);
 static Param check_args(int, char**);
 
 
@@ -54,12 +56,12 @@ int main(int argc, char** argv)
         goto exit;
     }
 
-    if(!has_input_files(optind, argc)) {
+    if(!has_input_files(param, argc)) {
         fprintf(stderr, "No input files\n");
         goto exit;
     }
 
-    if(!check_input_files(argv, argc, optind, param.output_type)) {
+    if(!check_input_files(argv, argc, param)) {
         goto exit;
     }
 
@@ -106,9 +108,9 @@ static void parameter_required(char c)
     fprintf(stderr, "  use -h for usage instructions\n");
 }
 
-static int has_input_files(int index, int count)
+static int has_input_files(Param param, int count)
 {
-    if(index < count) {
+    if(param.index < count) {
         return 1;
     }
 
@@ -134,20 +136,20 @@ static void illegal_filetype(char* str, char* suffix, char* type)
     fprintf(stderr, "Specified output type is '%s', expecting a '%s' file, but found '%s'\n", type, suffix, str);
 }
 
-static int check_input_files(char** files, int count, int index, char* type)
+static int check_input_files(char** files, int count, Param param)
 {
     int i;
-    for(i = index; i<count; i++) { 
+    for(i = param.index; i<count; i++) { 
         char* file = files[i];
 
-        if(strncmp(type, "erl2ast", MAX_STRLEN) == 0) {
+        if(strncmp(param.output_type, "erl2ast", MAX_STRLEN) == 0) {
             if(!has_suffix(file, ".erl")) {
-                illegal_filetype(file, ".erl", type);
+                illegal_filetype(file, ".erl", param.output_type);
                 return 0;
             }
         } else {
             if(!has_suffix(file, ".fn")) {
-                illegal_filetype(file, ".fn", type);
+                illegal_filetype(file, ".fn", param.output_type);
                 return 0;
             } 
         }
@@ -207,6 +209,7 @@ Param check_args(int argc, char** argv)
 
     }
 
+    param.index = optind;
     param.check_status = 1;
 
     return param;
