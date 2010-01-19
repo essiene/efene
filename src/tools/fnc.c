@@ -159,3 +159,54 @@ static int check_input_files(char** files, int count, int index, char* type)
 
     return 1;
 }
+
+Param check_args(int argc, char** argv)
+{
+    Param param;
+
+    param.flag_help= 0;
+    param.flag_verbose = 0;
+    param.free_outputdir = 0;
+    param.free_outputtype = 0;
+    param.output_dir = ".";
+    param.output_type = "beam";
+    param.check_status = 0;
+
+    while(1) {
+        int c = getopt(argc, argv, OPTSTRING);
+
+        switch(c) {
+            case 'h': param.flag_help = 1; break;
+            case 'v': param.flag_verbose = 1; break;
+            case 'o': {
+                          param.output_dir = strndup(optarg, MAX_STRLEN);
+                          param.free_outputdir = 1;
+                          break;
+                      }
+            case 't': {
+                          param.output_type = strndup(optarg, MAX_STRLEN); 
+                          param.free_outputtype = 1;
+                          break;
+                      }
+            /* getopt puts a '?' in global char 'optopt'
+               when it detects an illegal option char */
+            case '?': {
+                          illegal_option(optopt);
+                          return param;
+                      }
+            case ':' : {
+                           parameter_required(optopt);
+                           return param;
+                       }
+        }
+
+        if(c == -1) {
+            break;
+        }
+
+    }
+
+    param.check_status = 1;
+
+    return param;
+}
