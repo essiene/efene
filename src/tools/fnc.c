@@ -38,6 +38,7 @@ static int has_input_files(Param,int);
 static int has_suffix(char*, char*);
 static int check_input_files(char**, int, Param);
 static Param check_args(int, char**);
+static void cleanup(Param);
 
 
 int main(int argc, char** argv)
@@ -68,13 +69,7 @@ int main(int argc, char** argv)
     ret_status = 0;
 
 exit:
-    if(param.free_outputdir) { 
-        free(param.output_dir);
-    }
-
-    if(param.free_outputtype) { 
-        free(param.output_type);
-    }
+    cleanup(param);
 
     return ret_status;
 }
@@ -214,3 +209,15 @@ Param check_args(int argc, char** argv)
 
     return param;
 }
+
+void cleanup(Param param)
+{
+    if(param.free_outputdir) { 
+        free(param.output_dir);
+    }
+
+    if(param.free_outputtype) { 
+        free(param.output_type);
+    }
+}
+
