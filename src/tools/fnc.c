@@ -12,6 +12,20 @@
 #define OPTSTRING "+:ho:t:v"
 #define MAX_STRLEN 255
 
+typedef struct {
+    int flag_help;
+    int flag_verbose;
+
+    int free_outputdir;
+    int free_outputtype;
+
+    int check_status;
+
+    char* output_dir;
+    char* output_type;
+} Param;
+
+
 int opterr = 0;
 
 static void usage(char**);
