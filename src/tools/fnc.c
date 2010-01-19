@@ -35,51 +35,17 @@ static void parameter_required(char);
 static int has_input_files(int,int);
 static int has_suffix(char*, char*);
 static int check_input_files(char**, int, int, char*);
+static Param check_args(int, char**);
 
 
 int main(int argc, char** argv)
 {
-    int flag_help= 0;
-    int flag_verbose = 0;
-    char* output_dir = ".";
-    char* output_type = "beam";
-    int free_outputdir = 0;
-    int free_outputtype = 0;
 
     int ret_status = -1;
 
-    while(1) {
-        int c = getopt(argc, argv, OPTSTRING);
-
-        switch(c) {
-            case 'h': flag_help = 1; break;
-            case 'v': flag_verbose = 1; break;
-            case 'o': {
-                          output_dir = strndup(optarg, MAX_STRLEN);
-                          free_outputdir = 1;
-                          break;
-                      }
-            case 't': {
-                          output_type = strndup(optarg, MAX_STRLEN); 
-                          free_outputtype = 1;
-                          break;
-                      }
-            /* getopt puts a '?' in global char 'optopt'
-               when it detects an illegal option char */
-            case '?': {
-                          illegal_option(optopt);
-                          goto exit;
-                      }
-            case ':' : {
-                           parameter_required(optopt);
-                           goto exit;
-                       }
-        }
-
-        if(c == -1) {
-            break;
-        }
-
+    Param param = check_args(argc, argv);
+    if(!param.check_status) {
+        goto exit;
     }
 
     if(flag_help) {
