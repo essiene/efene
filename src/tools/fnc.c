@@ -48,7 +48,8 @@ int main(int argc, char** argv)
         goto exit;
     }
 
-    if(flag_help) {
+
+    if(param.flag_help) {
         usage(argv);
         goto exit;
     }
@@ -58,19 +59,19 @@ int main(int argc, char** argv)
         goto exit;
     }
 
-    if(!check_input_files(argv, argc, optind, output_type)) {
+    if(!check_input_files(argv, argc, optind, param.output_type)) {
         goto exit;
     }
 
     ret_status = 0;
 
 exit:
-    if(free_outputdir) { 
-        free(output_dir);
+    if(param.free_outputdir) { 
+        free(param.output_dir);
     }
 
-    if(free_outputtype) { 
-        free(output_type);
+    if(param.free_outputtype) { 
+        free(param.output_type);
     }
 
     return ret_status;
